@@ -179,23 +179,3 @@ AddEventHandler('helishop:SelHeli', function(plate)
     TriggerClientEvent("es_freeroam:notify", source, "CHAR_SIMEON", 1, "Simeon", false, "Hélicoptère vendu!\n")
   end)
 end)
-
-AddEventHandler('playerConnecting', function()
-	local player_state = 1
-	local executed_query = MySQL:executeQuery("SELECT * FROM users WHERE player_state = '@player_state'",
-      {['@player_state'] = player_state})
-	local result = MySQL:getResults(executed_query, {'player_state'})
-	if (result) then
-		for i,v in ipairs(result) do
-			sum = sum + v.player_state
-		end
-	else
-		sum = 0
-	end
-	if (sum < 1) then
-		local old_state = "Sortit"
-		local state = "Rentré"
-		local executed_query = MySQL:executeQuery("UPDATE user_heli SET `heli_state`='@state' WHERE heli_state = '@old_state'",
-		{['@old_state'] = old_state, ['@state'] = state})
-	end
-end)
